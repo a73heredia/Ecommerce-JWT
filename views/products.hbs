@@ -1,0 +1,33 @@
+<h1>Productos</h1>
+
+<table id="main" role="grid">
+  <tr>
+    <th>Nombre</th>
+    <th>Precio</th>
+    <th>Codigo</th>
+    <th>Descripcion</th>
+    <th>Stock</th>
+    <th>Status</th>
+    <th>Categoria</th>
+    {{!-- <th>
+      <a href="{{sortLink}}">Calificación</a>
+    </th> --}}
+    {{!-- <th>Grupo</th> --}}
+  </tr>
+  {{#each payload}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>{{this.price}}</td>
+      <td>{{this.code}}</td>
+      <td>{{this.description}}</td>
+      <td>{{this.stock}}</td>
+      <td>{{this.status}}</td>
+      <td>{{this.category}}</td>
+    </tr>
+  {{/each}}
+</table>
+
+<p>Página actual: {{page}}</p>
+
+<a href="{{prevLink}}" role="button" {{#isDisabled hasPrevPage}}disabled{{/isDisabled}}>Anterior</a>
+<a href="{{nextLink}}" role="button" {{#isDisabled hasNextPage}}disabled{{/isDisabled}}>Siguente</a>

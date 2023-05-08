@@ -1,0 +1,17 @@
+<article>
+    <h1>Login de usuario</h1>
+        {{#if error}}
+            <p>{{error}}</p>
+        {{/if}}
+        <form action="/api/sessions/login" method="post">
+            <input type="text" name="email" placeholder="email">
+            <input type="password" name="password" placeholder="password">
+            <p><a href="/reset-password">Olvidaste tu contraseña?</a></p>
+            <p>Quiero <a href="/register">registrarme</a></p>            
+            <button type="submit">Entrar</button>
+            <a href="/auth/github" role="button">Entrar con GiHub</a>
+        </form> 
+
+</article>
+
+
