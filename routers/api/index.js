@@ -12,7 +12,7 @@ router.use('/auth', authRouter)
 router.use('/users', usersRouter)
 router.use('/carts', cartsRouter)
 router.use('/products', productsRouter)
-router.use('/current', Utils.authJWTMiddleware('admin'),Utils.authorizationMiddleware('admin'), (req, res) => {
+router.use('/current', Utils.authJWTMiddleware('usuario'),Utils.authorizationMiddleware('usuario'), (req, res) => {
     res.json({success: true, message: 'This is a private route', user: req.user})
 })
 

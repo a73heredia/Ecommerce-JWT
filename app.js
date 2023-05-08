@@ -27,14 +27,18 @@ hbs.registerHelper('isDisabled', function (value, opts) {
     return !value ? opts.fn(this) : opts.inverse(this)
   })
   
+  // app.use(express.json())
+  // app.use(express.urlencoded({ extended: true }))
+  // app.use('/static', express.static(path.join(__dirname, 'public')))
+  
+  // app.set('view engine', 'hbs')
+  // app.set('views', path.join(__dirname, 'views'))
+
   app.use(express.json())
-  app.use(express.urlencoded({ extended: true }))
-  app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use(express.urlencoded({extended: true}))
+app.use(express.static('public'))
+app.use(cookieParser())
   app.use(cookieParser())
-
-  app.set('view engine', 'hbs')
-  app.set('views', path.join(__dirname, 'views'))
-
 //   app.use(expressSession({
 //     store: MongoStore.create({
 //         mongoUrl: process.env.MONGO_URI,
