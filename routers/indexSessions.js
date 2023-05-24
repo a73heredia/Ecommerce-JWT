@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import sessionsRouterApi from './api/sessions.js';
-import sessionsRouterViews from './views/sessions.js';
+// import { Router } from 'express';
+// import sessionsRouterApi from './api/sessions.js';
+// import sessionsRouterViews from './views/sessions.js';
 
-const router = Router();
+// const router = Router();
 
-router.use('/api/sessions', sessionsRouterApi);
-router.use('/', sessionsRouterViews);
+// router.use('/api/sessions', sessionsRouterApi);
+// router.use('/', sessionsRouterViews);
 
-export default router;
+// export default router;

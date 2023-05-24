@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 import MongoStore from 'connect-mongo';
 import routerProducts from './routers/indexProducts.js';
 import routerCarts from './routers/indexCarts.js';
-import routerSessions from './routers/indexSessions.js';
+//import routerSessions from './routers/indexSessions.js';
 import apiRouter from './routers/api/index.js'
 import viewRouter from './routers/views/index.js'
 import hbs from 'hbs';
@@ -38,16 +38,16 @@ hbs.registerHelper('isDisabled', function (value, opts) {
   app.use(express.urlencoded({extended: true}))
   app.use(express.static('public'))
   app.use(cookieParser())
-//   app.use(expressSession({
-//     store: MongoStore.create({
-//         mongoUrl: process.env.MONGO_URI,
-//         mongoOptions: {},
-//         ttl: 20000
-//     }),
-//     secret: process.env.COOKIE_SECRET,
-//     resave: false,
-//     saveUninitialized: false
-// }));
+  app.use(expressSession({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        mongoOptions: {},
+        ttl: 20000
+    }),
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
 
  initPassport()
  app.use(passport.initialize())

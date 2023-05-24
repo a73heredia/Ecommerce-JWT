@@ -2,6 +2,7 @@
     const formLogin = document.getElementById('form-login')
     const inputMail = document.getElementById('email')
     const inputPassword = document.getElementById('password')
+    const githubLoginButton = document.getElementById('github-login');
 
     formLogin.addEventListener('submit', async(event) => {
         event.preventDefault();
@@ -32,4 +33,9 @@
             console.log('Error', error);
         })
     })
+
+    githubLoginButton.addEventListener('click', () => {
+        window.location.href = '/auth/github';
+      });
+    
 })()

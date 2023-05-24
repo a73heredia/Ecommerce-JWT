@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import MessagesController from '../../controllers/messages.js'
+import Utils from '../../utils.js'
 
 const router = Router()
 

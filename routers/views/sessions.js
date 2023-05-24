@@ -1,31 +1,31 @@
-import { Router } from 'express';
-import passport from 'passport';
+// import { Router } from 'express';
+// import passport from 'passport';
 
-const router = Router();
+// const router = Router();
 
-const auth = (req, res, next) => {
-    if(req.session.user){
-        return next();
-    }
-    res.redirect('/login')
-}
+// const auth = (req, res, next) => {
+//     if(req.session.user){
+//         return next();
+//     }
+//     res.redirect('/login')
+// }
 
-router.get('/login', (req, res) => {
-    res.render('login')
-});
+// router.get('/login', (req, res) => {
+//     res.render('login')
+// });
 
-router.get('/register', (req, res) => {
-    res.render('register')
-});
+// router.get('/register', (req, res) => {
+//     res.render('register')
+// });
 
-router.get('/profile', auth, (req, res) => {
-     res.render('profile', req.session.user)
-});
+// router.get('/profile', auth, (req, res) => {
+//      res.render('profile', req.session.user)
+// });
 
-router.get('/reset-password', (req, res) => {
-    res.render('reset-password')
-});
+// router.get('/reset-password', (req, res) => {
+//     res.render('reset-password')
+// });
 
-router.get('/auth/github', passport.authenticate('github', {scope: [ 'user:email'] }))
+// router.get('/auth/github', passport.authenticate('github', {scope: [ 'user:email'] }))
 
-export default router;
+// export default router;
