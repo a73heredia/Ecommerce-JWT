@@ -6,18 +6,6 @@ const router = Router()
 
 router
   .post('/login', UsersController.login)
-  .post('/register', async(req, res, next) => {
-    const {  body } = req
-    const data = {
-      ...body,
-      password: Utils.createHash(body.password)
-    }
-    try {
-      const user = await UsersController.create(data)
-      res.status(201).json(user)
-    } catch (error) {
-      next(error)
-    }
-  })
+  .post('/register', UsersController.create)
 
 export default router

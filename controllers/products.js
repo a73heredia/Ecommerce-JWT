@@ -1,5 +1,7 @@
 import ProductModel from '../models/product.js';
 import Products from '../dao/product.js';
+import CommonsUtils from '../utils/common.js'
+
 
 class ProductController {
     // static async create(req, res) {
@@ -7,10 +9,16 @@ class ProductController {
     //     const result = await ProductModel.create(data);
     //     res.status(201).send(result);
     // }
-      static create = async(body) => {
-          const product = await Products.createProduct(body)
-          return product
-      }
+      static create = async(req, res, next) => {
+        const { body } = req
+        console.log(body);
+        try {
+            const product = await Products.createProduct(body)
+            res.status(201).json(product)
+        } catch (error) {
+            next(error)
+        }
+    }
     // static async get(req, res) {
     //     const result = await ProductModel.find();
     //     res.status(201).send(result);
@@ -23,10 +31,21 @@ class ProductController {
     // res.json(CommonsUtils.buildResponse(products))
     // }
 
-      static get = async () => {
-        const products = await Products.getProducts()
-        return products
-      }
+      static get =  async(req, res, next) => { 
+        try {
+            const result = await Products.getProducts()
+            const { query: {limit = 5, page = 1 } } = req
+            const options = {
+                limit,
+                page
+            }
+            const products = await ProductModel.paginate({}, options)
+            res.json(CommonsUtils.buildResponse(products))
+    
+        } catch (error) {
+            next(error)
+        }
+    }
 
     // static async getById(req, res) {
     //     const id = req.params.id
@@ -38,10 +57,14 @@ class ProductController {
     //     res.status(200).json(result)
     //   }
 
-    static getById = async(id) => {
-      const product = await Products.getProductById(id)
-      return product
-    } 
+    static getById = async(req, res, next) => {
+      try {
+          const product = await Products.getProductById(req.params.id)
+          res.status(200).json(product)
+      } catch (error) {
+          next(error)
+      }
+  }
 
     // static async updateById(req, res) {
     //     const { params: { id }, body } = req
@@ -49,11 +72,16 @@ class ProductController {
     //     res.status(204).end()
     // }
 
-    static updateById = async(id, body) => {
-      const data = body
-      await Products.updateProductById(id, data)
-      return { status: 'success'}
-    }
+    static updateById = async(req, res, next) => {
+      const id = req.params.id
+      const data = req.body
+      try {
+          await Products.updateProductById(id, data)
+          res.status(200).json({message: 'Updated'})
+      } catch (error) {
+          next(error)
+      }
+  }
 
     // static async deleteById(req, res) {
     //     const { params: { id } } = req
@@ -61,10 +89,15 @@ class ProductController {
     //     res.status(204).end()
     //   }
 
-    static deleteById = async(id) => {
-      await Products.deleteProductById(id)
-      return { status: 'success'}
-    }
+    static deleteById = async(req, res, next) => {
+      const id = req.params.id
+      try {
+          await Products.deleteProductById(id)
+          res.status(200).json({message: 'Deleted'})
+      } catch (error) {
+          next(error)
+      }
+  }
 
         //FILTRO POR CATEGORIA
   static async filtroCategory(req, res) {

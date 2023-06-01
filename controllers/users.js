@@ -1,33 +1,43 @@
 import UserModel from '../models/user.js'
 import Utils from '../utils/index.js'
 import Users from '../dao/user.js'
+import user from '../models/user.js'
 
 class UserController {
 
-  // static async create(req, res) {
-  //   const { body } = req
-  //   const user = {
-  //     ...body,
-  //     password: Utils.createHash(body.password)
-  //         }
-  //   const result = await UserModel.create(user)
-  //   res.status(201).json(result)
-  // }
-
-  static create = async (body) => {
-    const user = await Users.createUser(body)
-    return { status: 'success', payload: user }
+  static create = async(req, res, next) => {
+    const {  body } = req
+    const data = {
+      ...body,
+      password: Utils.createHash(body.password)
+    }
+    try {
+      const user = await Users.createUser(user)
+      res.status(201).json(user)
+    } catch (error) {
+      next(error)
+    }
   }
+
+  // static create = async (body) => {
+  //   const user = await Users.createUser(body)
+  //   return { status: 'success', payload: user }
+  // }
 
   // static async get(req, res) {
   //   const result = await UserModel.find()
   //   res.status(200).json(result)
   // }
 
-  static get = async() => {
-    const users = await Users.getUsers()
-    return { status: 'success', payload: users }
+  static get = async(req, res, next) => {
+    try {
+      const users = await Users.getUsers()
+      res.status(200).json(users)
+    } catch (error) {
+      next(error)
+    }  
   }
+
 
   // static async getById(req, res) {
   //   const { params: { id } } = req
@@ -38,9 +48,13 @@ class UserController {
   //   res.status(200).json(result)
   // }
 
-  static getById = async(id) => {
-    const user = await Users.getUserById(id)
-    return { status: 'success', payload: user }
+  static getById =  async(req, res, next) => {
+    try {
+      const user = await Users.getUserById(req.params.id)
+      res.status(200).json(user)
+    } catch (error) {
+      next(error)
+    }
   }
 
   // static async updateById(req, res) {
@@ -49,11 +63,15 @@ class UserController {
   //   res.status(204).end()
   // }
 
-  static updateById = async(id, body) => {
-    const data = body
-    await Users.updateUserById(id, data)
-
-    return { status: 'success' }
+  static updateById = async(req, res, next) => {
+    const id = req.params.id
+    const data = req.body
+    try {
+      await Users.updateUserById(id, data)
+      res.status(200).json({message: 'Updated'})
+    } catch (error) {
+      next(error)
+    }
   }
 
   // static async deleteById(req, res) {
@@ -62,9 +80,14 @@ class UserController {
   //   res.status(204).end()
   //}
 
-  static deleteById = async(id) => {
-    await Users.deleteUser(id)
-    return {status: 'success'}
+  static deleteById = async(req, res, next) => {
+    const id = req.params.id
+    try {
+      await Users.deleteUser(id)
+      res.status(200).json({message: 'Deleted'})
+    } catch (error) {
+      next(error)
+    }
   }
 
   static async login(req, res){
