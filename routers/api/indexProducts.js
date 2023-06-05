@@ -33,8 +33,8 @@ router
 //             page
 //         }
 //         const products = await ProductModel.paginate({}, options)
-//         res.json(CommonsUtils.buildResponse(products))
-
+//         //res.json(CommonsUtils.buildResponse(products))
+//         res.json(result)
 //     } catch (error) {
 //         next(error)
 //     }

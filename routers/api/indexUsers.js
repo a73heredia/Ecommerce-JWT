@@ -8,8 +8,8 @@ import user from '../../models/user.js'
  const router = Router()
 
  router
- .post('/', Utils.authJWTMiddleware(['admin']),  UsersController.create)
- .get('/',Utils.authJWTMiddleware(['admin']),  UsersController.get)
+ .post('/', /* Utils.authJWTMiddleware(['admin']) */  UsersController.create)
+ .get('/',  UsersController.get)
  .get('/:id', Utils.authJWTMiddleware(['admin', 'usuario']), UsersController.getById)
  .put('/:id', Utils.authJWTMiddleware(['admin', 'usuario']), UsersController.updateById)
  .delete('/:id', UsersController.deleteById)

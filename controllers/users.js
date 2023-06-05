@@ -12,7 +12,7 @@ class UserController {
       password: Utils.createHash(body.password)
     }
     try {
-      const user = await Users.createUser(user)
+      const user = await Users.createUser(data)
       res.status(201).json(user)
     } catch (error) {
       next(error)

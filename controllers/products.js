@@ -41,7 +41,7 @@ class ProductController {
             }
             const products = await ProductModel.paginate({}, options)
             res.json(CommonsUtils.buildResponse(products))
-    
+            
         } catch (error) {
             next(error)
         }

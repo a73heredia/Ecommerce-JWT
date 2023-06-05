@@ -8,7 +8,7 @@ import routerGithub from './github.js'
 const router = Router()
 
 router.use('/carrito', routerVistaCartID)
-router.use('/productos', routerVistaProducto)
+router.use('/products', routerVistaProducto)
 router.use('/mensajes', routerVistaMensajes)
 router.use('/', routerGithub)
 
