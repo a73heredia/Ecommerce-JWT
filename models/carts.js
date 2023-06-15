@@ -14,11 +14,8 @@ const cart = new mongoose.Schema({
         type: Number,
         default: 1
      }}],
-     cart:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      require: true
-   },
+     userEmail: String
+    
 },{ timestamps: true });
 
 cart.plugin(mongoosePaginate);

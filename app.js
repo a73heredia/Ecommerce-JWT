@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 import { init } from './db/mongodb.js';
 import initPassport from './config/passport.config.js';
 import dotenv from 'dotenv';
-
+import { addLogger } from './utils/logger.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -61,7 +61,7 @@ hbs.registerHelper('isDisabled', function (value, opts) {
  app.use('/api', apiRouter)
  app.use('/', viewRouter)
  //app.use('/', routerSessions);
-
+app.use(addLogger)
  app.use((err, req, res, next) => {
   /* console.log(err) */
   res 
