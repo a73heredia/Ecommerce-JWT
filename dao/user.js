@@ -17,8 +17,16 @@ class Users {
         return UserModel.updateOne({_id: id}, {$set: data})
     }
 
+    static updatePassword(id, data) {
+        return UserModel.updateOne({_id: id}, {password: data})
+    }
+
     static deleteUser(id) {
         return UserModel.deleteOne({_id: id})
+    }
+
+    static getUserByEmail(email) {
+        return UserModel.findOne({email: email})
     }
 }
 

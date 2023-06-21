@@ -2,6 +2,7 @@ import UserModel from '../models/user.js'
 import Utils from '../utils/index.js'
 import Users from '../dao/user.js'
 import user from '../models/user.js'
+import emailService from '../services/email.service.js'
 
 class UserController {
 
@@ -57,6 +58,15 @@ class UserController {
     }
   }
 
+  static getByEmail =  async(req, res, next) => {
+    try {
+      const user = await Users.getUserByEmail(req.body.email)
+      res.status(200).json(user)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   // static async updateById(req, res) {
   //   const { params: { id }, body } = req
   //   await UserModel.updateOne({ _id: id }, { $set: body })
@@ -92,8 +102,8 @@ class UserController {
 
   static async login(req, res){
     const {body: {email, password}} = req
-    const user = await UserModel.findOne({email})
-
+    // const user = await UserModel.findOne({email})
+    const user = await Users.getUserByEmail(email)
     if(!user){
       return res.status(401).json({ massage: ' Usuario o Contraseña Incorrecto'})
     }
@@ -108,6 +118,48 @@ class UserController {
       httpOnly: true
     }).status(200).json({success: true})
   } 
+
+  static async email(req, res) {
+    const attachments = []
+    const result = await emailService.sendEmail(
+      'aleheredia@outlook.com',
+      'hola como estas?',
+      `
+      <div>
+      <h1>Hola Ale como estas?</h1>
+      <a href="http://localhost:8080/reset.html">Cambiar contraseña</a>
+      </div>
+      `,
+      attachments
+    )
+    console.log(result);
+    res.send(
+      `
+      <div>
+        <h1>Hello Email</h1>
+          <a href="/">Go Back</a>
+        </div>
+    `)
+  }
+
+  static resetPassword = async(req, res, next) => {
+    const {body: {email, password}} = req
+    let user = await Users.getUserByEmail(email)
+    if(!user){
+      return res.status(401).json({ massage: ' Usuario o Contraseña Incorrecto'})
+    }
+    let id = user.id 
+    
+    try {
+      let pswd = Utils.createHash(password)
+      await Users.updatePassword(id, pswd)
+      res.status(200).json({message: 'Updated'})
+      res.send(pswd)
+    } catch (error) {
+      next(error)
+    }
+   
+  }
 
 }
 

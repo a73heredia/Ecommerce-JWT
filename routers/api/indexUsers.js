@@ -9,9 +9,10 @@ import user from '../../models/user.js'
 
  router
  .post('/', /* Utils.authJWTMiddleware(['admin']) */  UsersController.create)
+ .post('/reset', UsersController.resetPassword)
  .get('/',  UsersController.get)
  .get('/:id', Utils.authJWTMiddleware(['admin', 'usuario']), UsersController.getById)
- .put('/:id', Utils.authJWTMiddleware(['admin', 'usuario']), UsersController.updateById)
+ .put('/:id' , Utils.authJWTMiddleware(['admin', 'usuario']) , UsersController.updateById)
  .delete('/:id', UsersController.deleteById)
 
 // router.get('/', async(req, res, next) => {
