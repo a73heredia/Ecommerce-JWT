@@ -2,16 +2,16 @@ import { Router  } from "express";
 import ProductController from "../../controllers/products.js";
 import CommonsUtils from "../../utils/common.js";
 import ProductModel from '../../models/product.js'
-
+import Utils from '../../utils/index.js'
 
 const router = Router();
 
 router
      .get('/', ProductController.get)
      .get('/:id', ProductController.getById)
-     .post('/', ProductController.create)
-     .put('/:id', ProductController.updateById)
-     .delete('/:id', ProductController.deleteById)
+     .post('/',Utils.authJWTMiddleware(['admin','premium']), ProductController.create)
+     .put('/:id',Utils.authJWTMiddleware(['admin','premium']), ProductController.updateById)
+     .delete('/:id',Utils.authJWTMiddleware(['admin','premium']), ProductController.deleteById)
 
 // router.post('/', async(req, res, next) => {
 //     const { body } = req

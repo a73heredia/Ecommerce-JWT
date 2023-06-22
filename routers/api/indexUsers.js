@@ -12,8 +12,10 @@ import user from '../../models/user.js'
  .post('/reset', UsersController.resetPassword)
  .get('/',  UsersController.get)
  .get('/:id', Utils.authJWTMiddleware(['admin', 'usuario']), UsersController.getById)
+ .get('/premium/:id',Utils.authJWTMiddleware(['admin']), UsersController.changeUserRole)
  .put('/:id' , Utils.authJWTMiddleware(['admin', 'usuario']) , UsersController.updateById)
  .delete('/:id', UsersController.deleteById)
+
 
 // router.get('/', async(req, res, next) => {
 //   try {

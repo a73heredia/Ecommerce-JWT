@@ -1,5 +1,6 @@
 import cartsModel from  '../models/carts.js';
 import Carts from '../dao/cart.js';
+import Products from '../dao/product.js'
 
 class CartsController {
     //CREO EL CARRITO
@@ -46,30 +47,50 @@ class CartsController {
 
 //AGREGO AL CART
 
-static addProductToCart = async(req, res, next) => {
-  const { pid } = req.body;
-    const _id = req.params.id;
+//AGREGO UN PRODUCTO EN UN CARRITO EN ESPECIFICO: PASA POR BODY SOLO EL PID Y CID
+static async addProductToCart(req, res) {
+  const { pid, cid } = req.body;
+  const currentUser = req.user; // Obtener usuario actual
 
-    try {
-      const cart = await Carts.getCartById(_id)
-      console.log(cart);
-      if (!cart) {
-        return res.status(404).json({ message: "CART NOT FOUND" });
-      }
-      const productIndex = cart.products.findIndex(
-        (p) => p.product._id.toString() === pid
-      );
-      if (productIndex >= 0) {
-        cart.products[productIndex].quantity += 1;
-      } else {
-        cart.products.push({ product: pid });
-      }
-      await cart.save();
-      return res.status(200).json(cart);
+  try {
+    const cart = await Carts.getCartById(cid).populate("products.product");
+    if (!cart) {
+      return res.status(404).json({ message: "CART NOT FOUND" });
     }
-    catch (error) {
-      next(error)
+
+    const product = await Products.getProductById(pid); // Producto por id
+
+    // Verificar el rol del usuario actual
+    const validRoles = ["admin", "premium", "usuario"];
+    if (!validRoles.includes(currentUser.role)) {
+      return res.status(403).json({ message: "Invalid user role." });
     }
+
+    // Verificar si el usuario actual es "premium" y si el producto pertenece a él
+    if (
+      currentUser.role === "premium" &&
+      product.owner &&
+      product.owner === currentUser.email
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Premium users cannot add their own products to the cart."});
+    }
+
+    const productIndex = cart.products.findIndex(
+      (p) => p.product._id.toString() === pid
+    );
+    if (productIndex >= 0) {
+      cart.products[productIndex].quantity += 1;
+    } else {
+      cart.products.push({ product: pid });
+    }
+    await cart.save();
+    return res.status(200).json(cart);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "SERVER ERROR" });
+  }
 }
 
 //Borro pto del cart

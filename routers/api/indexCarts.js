@@ -9,7 +9,7 @@ const router = Router();
      .post('/', CartsController.create)
      .get('/', CartsController.get)
      .get('/:id', CartsController.getById)
-     .post('/:id', CartsController.addProductToCart)
+     .post('/:id',Utils.authJWTMiddleware(['admin','premium', 'usuario']), CartsController.addProductToCart)
      .put('/:id', CartsController.removeProductFromCart)
      .delete('/:id', CartsController.deleteById)
 

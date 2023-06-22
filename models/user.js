@@ -9,9 +9,10 @@ const user = new mongoose.Schema({
   cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Carts', require: true },
   role: {
     type: String,
-    enum: ['admin', 'usuario'],
+    enum: ['admin', 'usuario', 'premium'],
     default: 'usuario',
   },
+  cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart', required: true },
   status: { type: String, default: 'inactive', enum: ['active', 'inactive'] },
 }, { timestamps: true })
 

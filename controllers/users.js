@@ -1,23 +1,23 @@
 import UserModel from '../models/user.js'
 import Utils from '../utils/index.js'
 import Users from '../dao/user.js'
+import Carts from '../dao/cart.js'
 import user from '../models/user.js'
 import emailService from '../services/email.service.js'
 
 class UserController {
 
-  static create = async(req, res, next) => {
-    const {  body } = req
-    const data = {
+  static async create(req, res) {
+    const { body } = req;
+    const cart = await Carts.createCart({ items: [] }); // creo carrito vacío con el registro de usuario
+    const user = {
       ...body,
-      password: Utils.createHash(body.password)
-    }
-    try {
-      const user = await Users.createUser(data)
-      res.status(201).json(user)
-    } catch (error) {
-      next(error)
-    }
+      password: Utils.createHash(body.password),
+      cart: cart._id, 
+      status: 'inactive',
+    };
+    const result = await Users.createUser(user);
+    res.status(201).json(result);
   }
 
   // static create = async (body) => {
@@ -158,7 +158,30 @@ class UserController {
     } catch (error) {
       next(error)
     }
-   
+ 
+  }
+
+  static async changeUserRole(req, res) {
+    const { params: { id } } = req;
+    const user = await Users.getUserById(id);
+  
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+  
+    let newRole = '';
+    if (user.role === 'usuario') {
+      newRole = 'premium';
+    } else if (user.role === 'premium') {
+      newRole = 'usuario';
+    } else {
+      return res.status(400).json({ message: 'Rol de usuario inválido' });
+    }
+  
+    user.role = newRole;
+    await user.save();
+  
+    res.status(200).json({ message: 'Rol de usuario actualizado exitosamente', newRole });
   }
 
 }

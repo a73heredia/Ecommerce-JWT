@@ -9,7 +9,7 @@ const product = new mongoose.Schema({
     stock: { type: Number, require: true },
     status: { type: String, require: true },
     category: { type: String, require: true },
-
+    owner: {type: String, default: 'admin'}
 }, {timestamps: true});
 
 product.plugin(mongoosePaginate);
