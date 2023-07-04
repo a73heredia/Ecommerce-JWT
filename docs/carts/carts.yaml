@@ -1,0 +1,94 @@
+paths: 
+  /api/carts/:
+    get:
+      summary: Listar carritos
+      tags: 
+        - Carts
+      responses: 
+        200:
+          description: Lista de Carritos
+          content: 
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Carts'
+        500:
+          description: Error interno del servidor
+  /api/carts/{id}:
+    get:
+      summary: Lista un carrito a partir de su id
+      tags:
+        - Carts
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: Id del carrito
+          schema:
+            $type: string 
+      responses:
+        200:
+          description: Carrito encontrado
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts'
+        400:
+          description: Carrito no encontrado
+        500: 
+          description: Error interno del servidor
+
+components: 
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id: 
+          type: string
+          description: ID del Carrito    
+      example:   
+        _id: 60f0a9c9e6b3c2b4b8a6b2a0
+        name: Pollera
+        price: 100
+        category: Indumentaria
+        code: 123456
+        description: jean
+        thumbnail: aca va una imagen
+        stock: 10
+        owner: admin
+
+  requestBodies:
+    updateProducts:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del Producto
+        price:
+          type: number
+          description: Precio del Producto
+        category: 
+          type: string
+          description: Categoria del Producto
+        code: 
+          type: number
+          description: Codigo del Producto
+        description: 
+          type: string
+          description: Descripcion del Producto 
+        thumbnail: 
+          type: string
+          description: Imagen del Producto
+        stock: 
+          type: number
+          description: Stock del Producto  
+      example:
+        name: "Piloto"
+        price: 300
+        category: "Indumentaria"
+        code: 22536
+        description: "Tela impermeable"
+        thumbnail: "una imagen"
+        stock: 50
+
