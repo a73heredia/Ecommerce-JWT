@@ -48,15 +48,38 @@ components:
           type: string
           description: ID del Carrito    
       example:   
-        _id: 60f0a9c9e6b3c2b4b8a6b2a0
-        name: Pollera
-        price: 100
-        category: Indumentaria
-        code: 123456
-        description: jean
-        thumbnail: aca va una imagen
-        stock: 10
-        owner: admin
+        _id: "646fca71f17904dfdec30c5c"
+        products:
+          - product:
+              owner: "admin"
+              _id: "6424d9b853780e8343576dcf"
+              name: "Zapato"
+              price: 220
+              category: "Indumentaria"
+              code: 226
+              description: "Cuero"
+              thumbnail: "thumbnail"
+              createdAt: "2023-03-30T00:37:12.108Z"
+              updatedAt: "2023-05-26T02:57:52.251Z"
+              __v: 0
+              stock: 3
+            quantity: 3
+            _id: "64701f07b8fb5f2c974af11c"
+          - product:
+              owner: "admin"
+              _id: "6424d9d253780e8343576dd1"
+              name: "Zapatilla"
+              price: 260
+              category: "Indumentaria"
+              code: 233
+              description: "Running"
+              thumbnail: "thumbnail"
+              createdAt: "2023-03-30T00:37:38.649Z"
+              updatedAt: "2023-03-30T00:43:57.999Z"
+              __v: 0
+              stock: 5
+            quantity: 1
+            _id: "64710ec0d225073530a6a4c1"
 
   requestBodies:
     updateProducts:
