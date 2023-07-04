@@ -15,7 +15,7 @@ router.use('/users', usersRouter)
 router.use('/carts', cartsRouter)
 router.use('/products', productsRouter)
 router.use('/messages', messagesRouter)
-router.use('/', githubRouter)
+//router.use('/', githubRouter)
 
 router.use('/current', Utils.authJWTMiddleware('usuario'),Utils.authorizationMiddleware('usuario'), (req, res) => {
     res.json({success: true, message: 'This is a private route', user: req.user})

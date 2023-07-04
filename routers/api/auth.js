@@ -7,6 +7,7 @@ const router = Router()
 router
   .post('/login', UsersController.login)
   .post('/register', UsersController.create)
+  .post('/logout', UsersController.logout)
   .get('/email', UsersController.email)
   
 

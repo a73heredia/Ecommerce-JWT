@@ -112,12 +112,25 @@ class UserController {
       return res.status(401).json({ massage: ' Usuario o Contraseña Incorrecto'})
     }
 
+    user.status = 'active';
+    await user.save();
+
     const token = Utils.tokenGenerator(user)
     res.cookie('token', token, {
       maxAge: 60 * 60 * 1000,
       httpOnly: true
-    }).status(200).json({success: true})
+    }).status(200).json({success: true, token: token})
   } 
+
+  static async logout(req, res) {
+    const {body: {email}} = req
+    const user = await Users.getUserByEmail(email)
+    user.status = 'inactive'; // si deslogueo el usuario pasa a estar inactivo
+    await user.save();
+    res.clearCookie('token');
+    res.status(200).json({success: true, message: 'fuera de linea'});
+}
+
 
   static async email(req, res) {
     const attachments = []
