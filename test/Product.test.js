@@ -1,10 +1,15 @@
 import mongoose from 'mongoose';
 import Product from '../dao/product.js';
 import Assert from 'assert';
+import dotenv from 'dotenv';
 
 const assert = Assert.strict;
+dotenv.config();
 
-const connection = mongoose.connect('mongodb+srv://cristianalejandroheredia:catalina87@cluster0.qtpeto6.mongodb.net/ecommerce-test?retryWrites=true&w=majority');
+
+const MONGO_URI = process.env.MONGO_URI_TEST;
+
+const connection = mongoose.connect(MONGO_URI);
 
 describe('Pruebas al modulo de productos dao', function() {
     before(async function() {

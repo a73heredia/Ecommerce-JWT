@@ -2,9 +2,14 @@ import chai from 'chai';
 import mongoose from 'mongoose';
 import Cart from '../dao/cart.js';
 import Product from '../dao/product.js'
-const expect = chai.expect;
+import dotenv from 'dotenv';
 
-mongoose.connect('mongodb+srv://cristianalejandroheredia:catalina87@cluster0.qtpeto6.mongodb.net/ecommerce-test?retryWrites=true&w=majority');
+const expect = chai.expect;
+dotenv.config();
+
+const MONGO_URI = process.env.MONGO_URI_TEST;
+
+mongoose.connect(MONGO_URI);
 
 describe('Pruebas al modulo Cart dao', function () {
     before(function() {
