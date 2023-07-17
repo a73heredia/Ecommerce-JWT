@@ -4,6 +4,8 @@ import Users from '../dao/user.js'
 import Carts from '../dao/cart.js'
 import user from '../models/user.js'
 import emailService from '../services/email.service.js'
+import { uploader } from '../utils.js'
+import multer from 'multer'
 
 class UserController {
 
@@ -177,7 +179,7 @@ class UserController {
   static async changeUserRole(req, res) {
     const { params: { id } } = req;
     const user = await Users.getUserById(id);
-  
+    console.log(user);
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
@@ -195,6 +197,43 @@ class UserController {
     await user.save();
   
     res.status(200).json({ message: 'Rol de usuario actualizado exitosamente', newRole });
+  }
+
+  static async uploadImage(req, res) {
+    try {
+      const { params: { id }} = req;
+
+      //Verificar si el usuario existe
+      const user = await Users.getUserById(id);
+
+      if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+
+      //Configuarcion de Multer para guardar en diferentes carpetas
+      const upload = multer({storage: uploader.storage}).fields([
+        { name: 'profileImage', maxCount: 1 },
+        { name: 'productImage', maxCount: 1 },
+        { name: 'document', maxCount: 1 }
+      ]);
+
+      upload(req, res, async(err) => {
+        if(err) {
+          return res.status(400).json({ message: 'Error al subir el archivo' });
+        }
+
+         // Obtener los archivos subidos
+         const profileImage = req.files['profileImage'] ? req.files['profileImage'][0] : null;
+         const productImage = req.files['productImage'] ? req.files['productImage'][0] : null;
+         const document = req.files['document'] ? req.files['document'][0] : null;
+
+         res.status(200).json({ message: 'Archivo subido exitosamente' });
+      })
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
   }
 
 }

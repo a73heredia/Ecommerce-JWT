@@ -14,6 +14,11 @@ const user = new mongoose.Schema({
   },
   cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart', required: true },
   status: { type: String, default: 'inactive', enum: ['active', 'inactive'] },
+  documents: [{
+    name: String,
+    reference: String,
+  }],
+  last_connection: Date,
 }, { timestamps: true })
 
 export default mongoose.model('User', user)
