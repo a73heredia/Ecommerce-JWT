@@ -6,16 +6,19 @@ import Utils from '../../utils/index.js'
 import user from '../../models/user.js'
 
  const router = Router()
-
+ 
  router
  .post('/', /* Utils.authJWTMiddleware(['admin']) */  UsersController.create)
  .post('/reset', UsersController.resetPassword)
  .get('/',  UsersController.get)
- .get('/:id', Utils.authJWTMiddleware(['admin', 'usuario']), UsersController.getById)
- .get('/premium/:id'/* ,Utils.authJWTMiddleware(['admin']) */, UsersController.changeUserRole)
+ .get('/data', Utils.authJWTMiddleware(['admin']), UsersController.getData)
+ .get('/:id', /* Utils.authJWTMiddleware(['admin', 'usuario']), */ UsersController.getById)
+ .get('/premium/:id' ,Utils.authJWTMiddleware(['admin']), UsersController.changeUserRole)
  .put('/:id' , Utils.authJWTMiddleware(['admin', 'usuario']) , UsersController.updateById)
  .delete('/:id', UsersController.deleteById)
  .post('/:id/documents',Utils.authJWTMiddleware(['admin','user','premium']), UsersController.uploadImage)
+ .delete('/',Utils.authJWTMiddleware(['admin']), UsersController.deleteInactiveUsers)
+ 
 
 
 // router.get('/', async(req, res, next) => {

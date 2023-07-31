@@ -1,5 +1,5 @@
 import passport from "passport";
-import { Strategy as LocalStrategy } from 'passport-local';
+//import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
 import dotenv from 'dotenv';

@@ -17,6 +17,7 @@ import dotenv from 'dotenv';
 import { addLogger } from './utils/logger.js';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -25,6 +26,8 @@ const __dirname = path.dirname(__filename)
 await init();
 dotenv.config();
 const app = express();
+
+app.use(cors())
 
 hbs.registerHelper('isDisabled', function (value, opts) {
     return !value ? opts.fn(this) : opts.inverse(this)

@@ -12,7 +12,7 @@ const user = new mongoose.Schema({
     enum: ['admin', 'usuario', 'premium'],
     default: 'usuario',
   },
-  cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart', required: true },
+  cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Carts', required: true },
   status: { type: String, default: 'inactive', enum: ['active', 'inactive'] },
   documents: [{
     name: String,
@@ -20,5 +20,7 @@ const user = new mongoose.Schema({
   }],
   last_connection: Date,
 }, { timestamps: true })
+
+
 
 export default mongoose.model('User', user)

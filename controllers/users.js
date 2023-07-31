@@ -11,12 +11,13 @@ class UserController {
 
   static async create(req, res) {
     const { body } = req;
-    const cart = await Carts.createCart({ items: [] }); // creo carrito vacío con el registro de usuario
+    const cart = await Carts.createCart({ items: [] }); // Creo carrito vacío con el registro de usuario
     const user = {
       ...body,
       password: Utils.createHash(body.password),
-      cart: cart._id, 
+      cart: cart._id,
       status: 'inactive',
+      last_connection: new Date(), // Agrego la propiedad "last_connection" con la fecha y hora actual
     };
     const result = await Users.createUser(user);
     res.status(201).json(result);
@@ -35,10 +36,23 @@ class UserController {
   static get = async(req, res, next) => {
     try {
       const users = await Users.getUsers()
+            
+      
       res.status(200).json(users)
     } catch (error) {
       next(error)
     }  
+  }
+
+  static getData = async (req, res, next) => {
+    const result = await Users.getUsers()
+    const filteredData = result.map(user => ({
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      role: user.role
+    }));
+    res.status(200).json(filteredData);
   }
 
 
@@ -106,6 +120,8 @@ class UserController {
     const {body: {email, password}} = req
     // const user = await UserModel.findOne({email})
     const user = await Users.getUserByEmail(email)
+    const requ = req.user
+    console.log(requ);
     if(!user){
       return res.status(401).json({ massage: ' Usuario o Contraseña Incorrecto'})
     }
@@ -233,6 +249,49 @@ class UserController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  static async deleteInactiveUsers() {
+    try {
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      const filter = { last_connection: { $lt: twoDaysAgo } };
+  
+      // Obtén la lista de usuarios inactivos
+      const inactiveUsers = await Users.lastConnection(filter).lean();
+      console.log(inactiveUsers)
+  
+      // Envía un correo a cada usuario inactivo y luego elimínalos de la base de datos
+      const emailAndDeletePromises = inactiveUsers.map(async (user) => {
+        const userEmail = user.email;
+        const emailSubject = 'Eliminación de cuenta por inactividad';
+        const emailContent = `
+          <p>Estimado usuario,</p>
+          <p>Su cuenta ha sido eliminada debido a inactividad. Si desea volver a utilizar nuestros servicios, puede crear una nueva cuenta.</p>
+          <p>Gracias por su comprensión.</p>
+        `;
+  
+        try {
+          await emailService.sendEmail(userEmail, emailSubject, emailContent);
+          console.log(`Correo enviado a ${userEmail}: Su cuenta ha sido eliminada por inactividad.`);
+          
+          // Ahora eliminamos al usuario de la base de datos después de enviar el correo.
+          await Users.deleteInactive(filter); 
+        } catch (error) {
+          console.error(`Error al enviar el correo a ${userEmail}:`, error);
+        }
+      });
+  
+      // Esperamos a que se resuelvan todas las promesas de envío de correo y eliminación
+      await Promise.all(emailAndDeletePromises);
+  
+      const deletedUsersCount = emailAndDeletePromises.length;
+      console.log(`Se eliminaron ${deletedUsersCount} usuarios inactivos.`);
+      return deletedUsersCount;
+    } catch (error) {
+      console.error('Error al eliminar usuarios inactivos:', error);
+      return 0;
     }
   }
 

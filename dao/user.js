@@ -6,11 +6,11 @@ class Users {
     }
 
     static getUsers() {
-        return UserModel.find()
+        return UserModel.find().populate('cart')
     }
 
     static getUserById(id) {
-        return UserModel.findById(id)
+        return UserModel.findById(id).populate('cart')
     }
 
     static updateUserById(id, data) {
@@ -27,6 +27,18 @@ class Users {
 
     static getUserByEmail(email) {
         return UserModel.findOne({email: email})
+    }
+
+    static deleteInactive(filter) {
+        return UserModel.deleteMany(filter);
+    }
+
+    static lastConnection(last_connection) {
+        return UserModel.find(last_connection)
+    }
+
+    static getUserPremium(email, role) {
+        return userModel.findOne(email, role)
     }
 }
 

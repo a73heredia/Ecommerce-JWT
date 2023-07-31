@@ -6,11 +6,11 @@ class Carts {
     }
 
     static getCarts() {
-        return CartModel.find().populate('products.product')
+        return CartModel.find().populate('products')
     }
 
     static getCartById(id) {
-        return CartModel.findById(id).populate('products.product')
+        return CartModel.findById(id).populate('products')
     }
 
     static updateCartById(id, data) {

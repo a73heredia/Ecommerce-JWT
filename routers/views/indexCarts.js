@@ -11,7 +11,7 @@ routerViewsCart.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     const cart = await CartModel.findById(id).populate('products.product').lean();
-    
+    console.log(cart);
     if (!cart) {
       throw new Error(`CART ${id} NOT FOUND`);
     }

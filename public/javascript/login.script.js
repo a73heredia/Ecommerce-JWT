@@ -24,7 +24,7 @@
             console.log(data)
             if(data.success){
                 localStorage.setItem('token', data.access_token)
-               window.location.href = 'private.html'
+               window.location.href = 'http://localhost:8080/api/current'
             }else{
                 alert(data.message)
             }
