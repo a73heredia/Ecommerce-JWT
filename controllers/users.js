@@ -158,7 +158,7 @@ class UserController {
       `
       <div>
       <h1>Hola Ale como estas?</h1>
-      <a href="http://localhost:8080/reset.html">Cambiar contraseña</a>
+      <a href="https://ecommerce-jwt.hop.sh/reset.html">Cambiar contraseña</a>
       </div>
       `,
       attachments
