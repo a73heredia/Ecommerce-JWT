@@ -24,7 +24,7 @@
             console.log(data)
             if(data.success){
                 localStorage.setItem('token', data.access_token)
-               window.location.href = 'https://ecommerce-jwt.hop.sh/current'
+               window.location.href = 'https://ecommerce-jwt.hop.sh/api/current'
             }else{
                 alert(data.message)
             }
