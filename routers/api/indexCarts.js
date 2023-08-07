@@ -6,12 +6,13 @@ import Utils from '../../utils/index.js'
 const router = Router();
 
  router
-     .post('/', CartsController.create)
+     .post('/',Utils.authJWTMiddleware(['admin']) ,CartsController.create)
      .get('/', CartsController.get)
-     .get('/:id', CartsController.getById)
+     .get('/:id',Utils.authJWTMiddleware(['admin', 'usuario', 'premium']), CartsController.getById)
      .post('/:id',Utils.authJWTMiddleware(['admin','premium', 'usuario']), CartsController.addProductToCart)
-     .put('/:id', CartsController.removeProductFromCart)
-     .delete('/:id', CartsController.deleteById)
+     .put('/:id',Utils.authJWTMiddleware(['admin']), CartsController.removeProductFromCart)
+     .delete('/:id',Utils.authJWTMiddleware(['admin']), CartsController.deleteById)
+     
 
 
 
